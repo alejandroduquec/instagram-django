@@ -1,0 +1,10 @@
+{% extends "base/base.html" %}
+
+{% block head_content %}
+<title>@{{request.user.username}} | update profile </title>
+ {% block container %}
+   
+ {% endblock container %}
+
+ <h1 class="mt-5" style="padding-top: 5%">{{request.user.username}}</h1>
+{% endblock head_content %}
