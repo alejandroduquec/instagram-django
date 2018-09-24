@@ -9,7 +9,7 @@ class ProfileCompletionMiddleware:
         self.get_response=get_response
     def __call__(self,request):
         """code to be executed for each request before the view is called"""
-        if not request.user.is_anonymous:
+        if not request.user.is_anonymous or request.user.is_staff:
             profile=request.user.profile
             if not profile.picture or not profile.biography:
                 #except some urls
