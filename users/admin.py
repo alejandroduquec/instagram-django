@@ -5,6 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 #models
 from users.models import *
+from posts.models import *
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -64,4 +65,5 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User,UserAdmin)
+admin.site.register(Post)
     
