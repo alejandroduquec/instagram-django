@@ -9,6 +9,8 @@ from users import views
 
 
 urlpatterns = [
+    #Posts
+  
 
     # Management
     path(
@@ -30,6 +32,11 @@ urlpatterns = [
         route='me/profile/',
         view=views.update_profile,
         name='update_profile'
+    ),
+    path(
+        route='<str:username>/',
+        view=views.UserDetailView.as_view(),
+        name='detail'
     )
 
 ]

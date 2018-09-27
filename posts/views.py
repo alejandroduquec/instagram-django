@@ -2,21 +2,33 @@
 #Django
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-
-#Utilities
-from datetime import datetime 
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView
 #Forms
 from posts.forms import * 
 
 #Models
 from posts.models import *
+from users.models import *
 
-@login_required
-def list_post(request):
-    """view for posts"""
-    posts=Post.objects.all().order_by('-created')
-    return render(request,'posts/feed.html',{'posts':posts})
+
+class PostFeedView(ListView,LoginRequiredMixin):
+    """Return all published post"""
+
+    template_name='posts/feed.html'
+    model= Post
+    ordering=('-created',)
+    paginate_by=2
+    context_object_name='posts'
+
+class DetailPostView(DetailView,LoginRequiredMixin):
+    """detail for each post cicked """
+
+    template_name='posts/detail_post.html'
+    pk_url_kwarg = 'pk'
+    queryset=Post.objects.all()
+    context_object_name='post'
+
 
 @login_required
 def create_post(request):
@@ -34,6 +46,8 @@ def create_post(request):
         'profile':request.user.profile
 
     })
+
+
 
 
 
