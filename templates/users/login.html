@@ -5,8 +5,8 @@
 {% endblock head_content %}
 
 {% block container %}
-{% if error %}
-<p class="alert alert-danger">{{error}}</p>
+{% if form.erros %}
+<p class="alert alert-danger">Bad Credencials, didn't match. Try Again</p>
   
 {% endif %}
   <form method="POST" action="{% url 'users:login'%}">

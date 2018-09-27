@@ -3,7 +3,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 #Forms
 from posts.forms import * 
 
@@ -12,7 +13,7 @@ from posts.models import *
 from users.models import *
 
 
-class PostFeedView(ListView,LoginRequiredMixin):
+class PostFeedView(LoginRequiredMixin,ListView):
     """Return all published post"""
 
     template_name='posts/feed.html'
@@ -21,7 +22,7 @@ class PostFeedView(ListView,LoginRequiredMixin):
     paginate_by=2
     context_object_name='posts'
 
-class DetailPostView(DetailView,LoginRequiredMixin):
+class DetailPostView(LoginRequiredMixin,DetailView):
     """detail for each post cicked """
 
     template_name='posts/detail_post.html'
@@ -29,23 +30,18 @@ class DetailPostView(DetailView,LoginRequiredMixin):
     queryset=Post.objects.all()
     context_object_name='post'
 
+class CreatePostView(LoginRequiredMixin,CreateView):
+    """create new  posts"""
+    template_name='posts/new.html'
+    form_class=PostForm
+    success_url=reverse_lazy('posts:feed')
 
-@login_required
-def create_post(request):
-    """create new view post"""
-    if request.method =='POST':
-        form=PostForm(request.POST,request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('posts:feed')
-    else:
-        form=PostForm()
-    return render(request,'posts/new.html',{
-        'form':form,
-        'user':request.user,
-        'profile':request.user.profile
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        context['user']=self.request.user
+        context['profile']=self.request.user.profile
+        return context
 
-    })
 
 
 
