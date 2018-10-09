@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_views
 from django.shortcuts import render, redirect
-from django.views.generic import DetailView
-from django.urls import reverse
+from django.views.generic import DetailView, FormView, UpdateView
+from django.urls import reverse_lazy
 #Models
 from django.contrib.auth.models import User
 from users.models import Profile
@@ -37,32 +37,22 @@ class UserDetailView(LoginRequiredMixin,DetailView):
         context['posts']= Post.objects.filter(user=user).order_by('-created')
         return context
 
-@login_required
-def update_profile(request):
-    """ update a users profile """
-    profile=request.user.profile
-    if request.method=='POST':
-        form=ProfileForm(request.POST,request.FILES)
-        if form.is_valid():
-            data=form.cleaned_data
+class UpdateProfile(LoginRequiredMixin,UpdateView):
+    """Update profile"""
+    template_name='users/update_profile.html'
+    model=Profile
+    fields=['website','phone_number','picture','biography']
 
-            profile.website=data['website']
-            profile.phone_number=data['phone_number']
-            profile.biography=data['biography']
-            profile.picture=data['picture']
-            profile.save()   
-            url=reverse('users:detail',kwargs={'username':request.user.username})
-            return redirect(url)  
-    else:
-        form = ProfileForm()
+    def get_object(self):
+        """return user profile"""
+        return self.request.user.profile
+    def get_success_url(self):
+        """Returno to users profile"""
+        username=self.object.user.username
+        return reverse_lazy('users:detail', kwargs={'username':username})
 
-    return render(request,'users/update_profile.html',
-        {
-        'form':form,
-        'profile':profile,
-        'user':request.user
-        }
-    )
+
+
 
 class LoginView(auth_views.LoginView):
     """Login view"""
@@ -73,15 +63,13 @@ class LogoutView(LoginRequiredMixin,auth_views.LogoutView):
     template_name='users/logout.html'
 
 
-def signup(request):
-    """sigin up view"""
-    if request.method == 'POST':
-        form=SignupForms(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form=SignupForms()
-    return render(request,'users/signup.html',{'form':form})
+class SignupView(FormView):
+    """users sign up view (similar to create view)"""
+    template_name='users/signup.html'
+    form_class=SignupForms
+    success_url=reverse_lazy('users:login')
 
+    def form_valid(self,form):
+        form.save()
+        return super().form_valid(form)
 

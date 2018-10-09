@@ -19,7 +19,7 @@ class PostFeedView(LoginRequiredMixin,ListView):
     template_name='posts/feed.html'
     model= Post
     ordering=('-created',)
-    paginate_by=2
+    paginate_by=4
     context_object_name='posts'
 
 class DetailPostView(LoginRequiredMixin,DetailView):
