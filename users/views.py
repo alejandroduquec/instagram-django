@@ -61,12 +61,13 @@ class LoginView(auth_views.LoginView):
 class LogoutView(LoginRequiredMixin,auth_views.LogoutView):
     """logout view"""
     template_name='users/logout.html'
-
+    
 
 class SignupView(FormView):
     """users sign up view (similar to create view)"""
     template_name='users/signup.html'
     form_class=SignupForms
+    
     success_url=reverse_lazy('users:login')
 
     def form_valid(self,form):

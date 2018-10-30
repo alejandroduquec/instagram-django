@@ -13,5 +13,6 @@ urlpatterns = [
 
     path('', include(('posts.urls','posts'), namespace='posts')),
     path('users/',include(('users.urls','users'),namespace='users')),
+    path('api/',include(('api.urls','api'),namespace='api')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
