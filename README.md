@@ -1,2 +1,2 @@
-# instagram-django
-uso de buenas prácticas de desarrollo en python 3 y django para crear un similar a instagram
+# instagram-django-similar
+Django best practices to buil similar to instagram based in Python
