@@ -1,14 +1,15 @@
-""" users forms"""
+"""Users forms."""
 
-#Django
+# Django
 from django import forms
 
-#Models 
-from posts.models import *
+# Models
+from posts.models import Post
+
 
 class PostForm(forms.ModelForm):
-    """ post model form"""
-    class Meta:
-        model=Post
-        fields=('user','profile','title','photo')
+    """Post model form."""
 
+    class Meta:
+        model = Post
+        fields = ('user', 'profile', 'title', 'photo')

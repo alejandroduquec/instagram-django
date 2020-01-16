@@ -5,7 +5,20 @@ from rest_framework.serializers import ModelSerializer
 #models
 from posts.models import *
 
-class PostSerializer(ModelSerializer):
+class PostListSerializer(ModelSerializer):
+    """Serializer model for posts"""
+    class Meta:
+        model =Post
+        fields=[
+            'pk',
+            'user',
+            'profile',
+            'title',
+            'created'
+         
+        ]
+class PostDetailSerializer(ModelSerializer):
+    """Serializer model detail for posts"""
     class Meta:
         model =Post
         fields=[
@@ -13,6 +26,18 @@ class PostSerializer(ModelSerializer):
             'profile',
             'title',
             'title',
+            'photo'
         ]
+
+class CreatePostSerializer(ModelSerializer):
+    """Serializer model for posts"""
+    class Meta:
+        model =Post
+        fields=[
+            'id',
+            'title',
+            'photo',
+        ]
+
 
 

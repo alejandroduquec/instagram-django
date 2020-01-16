@@ -1,10 +1,11 @@
-"""posts url"""
-#Django
+"""Posts url."""
+
+# Django
 from django.urls import path
 
 from posts import views
 
-urlpatterns=[
+urlpatterns = [
     path(
         route='',
         view=views.PostFeedView.as_view(),
@@ -14,7 +15,7 @@ urlpatterns=[
         route='posts/new',
         view=views.CreatePostView.as_view(),
         name='create_post'),
-        
+
     path(
         route='posts/detail/<int:pk>/',
         view=views.DetailPostView.as_view(),

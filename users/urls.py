@@ -10,8 +10,6 @@ from users import views
 
 urlpatterns = [
     #Posts
-  
-
     # Management
     path(
         route='login/',
@@ -29,7 +27,7 @@ urlpatterns = [
         name='signup'
     ),
     path(
-        route='me/profile/',
+        route='aa',
         view=views.UpdateProfile.as_view(),
         name='update_profile'
     ),
@@ -37,6 +35,11 @@ urlpatterns = [
         route='<str:username>/',
         view=views.UserDetailView.as_view(),
         name='detail'
+    ),
+    path(
+        route='me/profile/',
+        view=views.UserUpdate.as_view(),
+        name='me_profile'
     )
 
 ]
